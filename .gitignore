@@ -1,0 +1,16 @@
+# Node modules (if you used npm)
+node_modules/
+
+# IDE files
+.idea/
+*.iml
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Temporary files
+.tmp/

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IBAN Formatter</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            width: 320px;
+            padding: 16px;
+            margin: 0;
+        }
+        h1 {
+            font-size: 18px;
+            margin-top: 0;
+            margin-bottom: 16px;
+        }
+        .input-container {
+            margin-bottom: 16px;
+        }
+        #ibanInput {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+            font-family: monospace;
+        }
+        .result-container {
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+        }
+        .result-label {
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+        .result-value {
+            font-family: monospace;
+            padding: 6px;
+            background-color: #f5f5f5;
+            border-radius: 4px;
+            margin-right: 8px;
+            flex-grow: 1;
+            word-break: break-all;
+        }
+        .copy-btn {
+            background-color: #4285f4;
+            color: white;
+            border: none;
+            padding: 6px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .copy-btn:hover {
+            background-color: #3367d6;
+        }
+        .error-message {
+            color: #d32f2f;
+            margin-top: 8px;
+        }
+        .success-message {
+            color: #388e3c;
+            margin-top: 8px;
+        }
+    </style>
+</head>
+<body>
+<h1>IBAN Formatter</h1>
+
+<div class="input-container">
+    <label for="ibanInput" class="result-label">Enter IBAN:</label>
+    <input type="text" id="ibanInput" placeholder="Paste your IBAN here" aria-label="IBAN input field">
+</div>
+
+<div id="results" style="display: none;">
+    <div class="result-container">
+        <div>
+            <div class="result-label">Continuous Format:</div>
+            <div id="continuousResult" class="result-value"></div>
+        </div>
+        <button id="copyContinuous" class="copy-btn" aria-label="Copy continuous format">Copy</button>
+    </div>
+
+    <div class="result-container">
+        <div>
+            <div class="result-label">Grouped Format:</div>
+            <div id="groupedResult" class="result-value"></div>
+        </div>
+        <button id="copyGrouped" class="copy-btn" aria-label="Copy grouped format">Copy</button>
+    </div>
+</div>
+
+<div id="messageContainer"></div>
+
+<script src="iban-utils.js"></script>
+<script src="popup.js"></script>
+</body>
+</html>

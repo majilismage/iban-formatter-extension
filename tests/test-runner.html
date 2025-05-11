@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IBAN Formatter Tests</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        #test-results {
+            margin-top: 20px;
+            border: 1px solid #ccc;
+            padding: 20px;
+            border-radius: 5px;
+        }
+        .test-passed {
+            color: green;
+        }
+        .test-failed {
+            color: red;
+        }
+        .test-item {
+            margin-bottom: 10px;
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        .test-details {
+            margin-left: 20px;
+            font-family: monospace;
+            white-space: pre-wrap;
+        }
+        .summary {
+            font-weight: bold;
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f5f5f5;
+            border-radius: 5px;
+        }
+        pre {
+            background-color: #f5f5f5;
+            padding: 10px;
+            border-radius: 4px;
+            overflow: auto;
+            max-height: 200px;
+        }
+        .script-status {
+            margin-bottom: 20px;
+            padding: 10px;
+            background-color: #f5f5f5;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+<h1>IBAN Formatter Tests</h1>
+
+<div class="script-status">
+    <h3>Script Loading Status:</h3>
+    <div id="loading-status">Checking script loading status...</div>
+</div>
+
+<button id="run-tests">Run Tests</button>
+
+<div id="test-results"></div>
+
+<!-- Load scripts in the correct order -->
+<script>
+    // Create a loading status checker
+    const loadingStatus = document.getElementById('loading-status');
+    const scriptStatuses = {
+        ibanUtils: false,
+        ibanTestData: false,
+        ibanTests: false
+    };
+
+    function updateLoadingStatus() {
+        const statusHtml = Object.entries(scriptStatuses)
+            .map(([script, loaded]) =>
+                `<div>${script}: <span class="${loaded ? 'test-passed' : 'test-failed'}">${loaded ? 'Loaded ✓' : 'Not loaded ✗'}</span></div>`
+            )
+            .join('');
+
+        loadingStatus.innerHTML = statusHtml;
+
+        // Enable or disable the run button based on loading status
+        const allLoaded = Object.values(scriptStatuses).every(status => status === true);
+        document.getElementById('run-tests').disabled = !allLoaded;
+    }
+
+    // Initial update
+    updateLoadingStatus();
+
+    // Helper function to create and load scripts in sequence
+    function loadScript(src, onLoadCallback) {
+        const script = document.createElement('script');
+        script.src = src;
+        script.onload = onLoadCallback;
+        script.onerror = (error) => {
+            console.error(`Error loading script ${src}:`, error);
+            loadingStatus.innerHTML += `<div class="test-failed">Error loading ${src}</div>`;
+        };
+        document.body.appendChild(script);
+    }
+
+    // Load scripts in sequence
+    loadScript('../iban-utils.js', function() {
+        // Check if ibanUtils is available
+        scriptStatuses.ibanUtils = typeof window.ibanUtils !== 'undefined';
+        updateLoadingStatus();
+
+        // Load test data next
+        loadScript('./iban-test-data.js', function() {
+            // Check if ibanTestData is available
+            scriptStatuses.ibanTestData = typeof window.ibanTestData !== 'undefined';
+            updateLoadingStatus();
+
+            // Load test runner last
+            loadScript('./iban-tests.js', function() {
+                // Check if runIbanTests is available
+                scriptStatuses.ibanTests = typeof window.runIbanTests === 'function';
+                updateLoadingStatus();
+            });
+        });
+    });
+</script>
+
+<script>
+    document.getElementById('run-tests').addEventListener('click', function() {
+        const resultsDiv = document.getElementById('test-results');
+        resultsDiv.innerHTML = ''; // Clear previous results
+
+        try {
+            // Check if functions exist
+            if (typeof window.runIbanTests !== 'function') {
+                throw new Error('Test runner function not found. Make sure iban-tests.js is loaded correctly.');
+            }
+
+            // Run the tests
+            const results = window.runIbanTests();
+
+            // Display results
+            const summaryDiv = document.createElement('div');
+            summaryDiv.className = 'summary';
+            summaryDiv.innerHTML = `
+                    <div>Total tests: ${results.totalTests}</div>
+                    <div class="test-passed">Passed: ${results.passedTests}</div>
+                    <div class="test-failed">Failed: ${results.failedTests}</div>
+                `;
+
+            resultsDiv.appendChild(summaryDiv);
+
+            // Display detailed results
+            window.ibanTestData.forEach((testCase, index) => {
+                const testDiv = document.createElement('div');
+                testDiv.className = 'test-item';
+
+                // Process the IBAN
+                const result = window.ibanUtils.processIBAN(testCase.input);
+
+                // Check if test passed
+                const validityMatch = result.isValid === testCase.expectedResult.isValid;
+                const errorMatch = !result.isValid && !testCase.expectedResult.isValid ?
+                    result.errorMessage === testCase.expectedResult.errorMessage :
+                    true;
+                const continuousMatch = result.isValid && testCase.expectedResult.isValid ?
+                    result.continuous === testCase.expectedResult.continuous :
+                    true;
+                const groupedMatch = result.isValid && testCase.expectedResult.isValid ?
+                    result.grouped === testCase.expectedResult.grouped :
+                    true;
+
+                const testPassed = validityMatch && errorMatch && continuousMatch && groupedMatch;
+
+                testDiv.innerHTML = `
+                        <div class="${testPassed ? 'test-passed' : 'test-failed'}">
+                            Test #${index + 1}: ${testCase.description} - ${testPassed ? 'PASSED ✓' : 'FAILED ✗'}
+                        </div>
+                        <div class="test-details">
+                            <pre>Input: "${testCase.input}"
+Expected: ${JSON.stringify(testCase.expectedResult, null, 2)}
+Result: ${JSON.stringify(result, null, 2)}</pre>
+                        </div>
+                    `;
+
+                resultsDiv.appendChild(testDiv);
+            });
+        } catch (e) {
+            resultsDiv.innerHTML = `<div class="test-failed">Error running tests: ${e.message}</div>`;
+            console.error(e);
+        }
+    });
+</script>
+</body>
+</html>

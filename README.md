@@ -1,58 +1,74 @@
-# IBAN Formatter Chrome Extension
+# IBANify: IBAN Detector & Validator
 
-A lightweight Chrome extension for formatting and validating International Bank Account Numbers (IBANs).
+A powerful yet simple Chrome extension that helps you work with International Bank Account Numbers (IBANs) effortlessly.
 
-## Features
+![IBANify Logo](icons/icon128.png)
 
-- **Auto-Detection**: Automatically detects IBAN patterns on webpages
-- **One-Click Formatting**: Format detected IBANs with a single context menu click
-- **Manual Input**: Paste IBANs into a popup for formatting and validation
-- **Multiple Format Options**: View and copy IBANs in continuous or grouped format
-- **Validation**: Validates IBAN structure and check digits against country-specific rules
-- **Copy-to-Clipboard**: Quickly copy formatted IBANs to clipboard
+## What IBANify Does For You
 
-## Installation for Development
+IBANify streamlines your workflow when dealing with International Bank Account Numbers by:
 
-1. Clone or download this repository
-2. Add icon files to the `icons` folder (16×16, 48×48, and 128×128 pixels)
-3. Open Chrome and navigate to `chrome://extensions/`
-4. Enable Developer Mode using the toggle in the top-right corner
-5. Click "Load unpacked" and select the folder containing the extension files
+- **Instantly Detecting IBANs** on any webpage you're viewing
+- **Validating IBANs** against country-specific rules and check digits
+- **Formatting IBANs Correctly** in either continuous or grouped format
+- **Copying Formatted IBANs** to your clipboard with just one click
 
-## Usage
+Whether you're a finance professional, accountant, or anyone who works with international banking details, IBANify saves you time and prevents errors when handling IBANs.
 
-### Popup Interface
+## How to Use IBANify
 
-1. Click the extension icon in the toolbar to open the popup
-2. Paste an IBAN into the input field
-3. If valid, both continuous and grouped formats will be displayed
-4. Click the "Copy" button to copy the desired format to clipboard
+### Method 1: Right-Click on Any IBAN
 
-### Context Menu Integration
+Found an IBAN on a webpage? Simply:
+1. **Select the IBAN text** (works even if it contains spaces or other separators)
+2. **Right-click** and choose "Format IBAN" from the context menu
+3. **Instantly copied!** The properly formatted IBAN is now on your clipboard
+4. A toast notification will confirm the action was successful
 
-1. Select text on a webpage that resembles an IBAN
-2. Right-click and select "Format IBAN" from the context menu
-3. The formatted IBAN will be copied to your clipboard
-4. A notification will confirm the action
+### Method 2: Use the Popup Interface
 
-## Project Structure
+Need to validate or format an IBAN manually?
+1. **Click the IBANify icon** in your Chrome toolbar
+2. **Paste or type** the IBAN into the input field
+3. **Instant validation** will show if the IBAN is valid
+4. **Two format options** will be displayed:
+    - Continuous format (no spaces)
+    - Grouped format (spaces every 4 characters)
+5. **Click "Copy"** next to your preferred format
 
-- `manifest.json`: Extension configuration
-- `popup.html`: UI for the popup
-- `popup.js`: Logic for the popup interface
-- `background.js`: Background script for context menu integration
-- `content.js`: Content script for webpage interaction
-- `iban-utils.js`: IBAN validation and formatting logic
-- `icons/`: Extension icons in various sizes
+## Supported Countries
 
-## Testing
+IBANify supports IBAN formats from over 70 countries worldwide, including:
+- All EU member states
+- United Kingdom
+- Switzerland
+- Middle Eastern countries
+- And many more!
 
-See the `Testing and Validation Instructions.md` file for detailed testing procedures.
+Each country's specific IBAN length and structure rules are validated automatically.
 
-## License
+## Privacy & Security
 
-[MIT License](LICENSE)
+We take your privacy seriously:
+- **100% Local Processing** - All validation and formatting happens on your device
+- **No Data Transmission** - Your IBANs are never sent to any server
+- **No Tracking** - We don't collect any usage data or analytics
 
-## Privacy
+## Support & Feedback
 
-This extension processes all data locally and does not transmit any information to external servers.
+If you find IBANify helpful, please consider:
+- **Rating it** on the Chrome Web Store
+- **Sharing it** with colleagues who work with IBANs
+- **Sending feedback** if you have suggestions for improvements
+
+## Examples of Valid IBANs for Testing
+
+- **Germany**: DE89 3704 0044 0532 0130 00
+- **France**: FR76 3000 6000 0112 3456 7890 189
+- **UK**: GB29 NWBK 6016 1331 9268 19
+- **Spain**: ES91 2100 0418 4502 0005 1332
+- **Italy**: IT60 X054 2811 1010 0000 0123 456
+
+---
+
+IBANify - Format and validate International Bank Account Numbers with ease.

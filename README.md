@@ -55,6 +55,27 @@ We take your privacy seriously:
 - **No Tracking** - We don't collect any usage data or analytics
 
 ## Support & Feedback
+This repository hosts the support resources and documentation for the IBANify Chrome Extension.
+
+## Support Website
+
+Visit our support website at [https://majilismage.github.io/iban-formatter-extension](https://majilismage.github.io/iban-formatter-extension)
+
+## Resources Available
+
+- Getting Started Guide
+- Frequently Asked Questions
+- Troubleshooting Tips
+- Feedback Submission
+- Privacy Policy
+- 
+## Contributing
+
+If you'd like to contribute to improving our documentation, please feel free to submit a pull request.
+
+## Contact
+
+For direct support, please email [majilismage@googlemail.com](mailto:majilismage@googlemail.com)
 
 If you find IBANify helpful, please consider:
 - **Rating it** on the Chrome Web Store
